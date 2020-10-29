@@ -20,7 +20,9 @@ TEZI_VERSION ?= "${DISTRO_VERSION}"
 TEZI_DATE ?= "${TDX_MATRIX_BUILD_TIME}"
 TEZI_IMAGE_NAME ?= "${IMAGE_NAME}"
 TEZI_ROOT_FSTYPE ??= "ext4"
-TEZI_ROOT_LABEL ??= "RFS"
+TEZI_ROOT_LABEL_ROOT_A ??= "MENDER_ROOTFS_PART_A"
+TEZI_ROOT_LABEL_ROOT_B ??= "MENDER_ROOTFS_PART_B"
+TEZI_DATA_LABEL ??= "DATA"
 TEZI_ROOT_SUFFIX ??= "tar.xz"
 TEZI_BOOT_SUFFIX ??= "bootfs.tar.xz"
 TEZI_CONFIG_FORMAT ??= "2"
@@ -155,11 +157,31 @@ def rootfs_tezi_emmc(d, distro=False):
               "partition_size_nominal": 512,
               "want_maximised": True,
               "content": {
-                "label": d.getVar('TEZI_ROOT_LABEL'),
+                "label": d.getVar('TEZI_ROOT_LABEL_ROOT_A'),
                 "filesystem_type": d.getVar('TEZI_ROOT_FSTYPE'),
                 "mkfs_options": "-E nodiscard",
                 "filename": imagename + "." + d.getVar('TEZI_ROOT_SUFFIX'),
                 "uncompressed_size": get_uncompressed_size(d, 'ota' if distro else "rootfs")
+              }
+            },
+            {
+              "partition_size_nominal": 512,
+              "want_maximised": True,
+              "content": {
+                "label": d.getVar('TEZI_ROOT_LABEL_ROOT_B'),
+                "filesystem_type": d.getVar('TEZI_ROOT_FSTYPE'),
+                "mkfs_options": "-E nodiscard",
+                "filename": imagename + "." + d.getVar('TEZI_ROOT_SUFFIX'),
+                "uncompressed_size": get_uncompressed_size(d, 'ota' if distro else "rootfs")
+              }
+            },
+            {
+              "partition_size_nominal": 128,
+              "want_maximised": True,
+              "content": {
+                "label": d.getVar('TEZI_DATA_LABEL'),
+                "filesystem_type": d.getVar('TEZI_ROOT_FSTYPE'),
+                "mkfs_options": "-E nodiscard"
               }
             }
           ]
