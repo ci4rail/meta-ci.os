@@ -1,5 +1,5 @@
 #!/bin/sh
 echo "uptime=$(awk '{print $1}' /proc/uptime | awk -F '.' '{print $1}')"
-#echo "mem_total=$(free | grep Mem | awk '{print $2}')"
-#echo "mem_used=$(free | grep Mem | awk '{print $3}')"
-#echo "mem_free=$(free | grep Mem | awk '{print $4}')"
+echo "mem_total=$(free | grep Mem | awk '{print $2}')"
+echo "mem_used=$(free | grep Mem | awk '{print $3}')"
+echo "mem_free=$(free | grep Mem | awk '{print $4}')"
