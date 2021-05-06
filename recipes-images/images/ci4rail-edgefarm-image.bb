@@ -70,4 +70,6 @@ IMAGE_INSTALL += " \
     util-linux \
     networkmanager \
     modemmanager \
+    chrony \
+    chronyc \
 "
